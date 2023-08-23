@@ -1,0 +1,22 @@
+# ... (other imports)
+{
+  "name": "John Doe",
+  "phone": "123-456-7890",
+  "email": "john@example.com",
+  "farms": [
+    {
+      "size": "10 acres",
+      "location": "Farm A Location",
+      "live_location": "Live Location A",
+      "crop_type": "Wheat",
+      "crop_size": "5 acres"
+    },
+    {
+      "size": "5 acres",
+      "location": "Farm B Location",
+      "live_location": "Live Location B",
+      "crop_type": "Corn",
+      "crop_size": "3 acres"
+    }
+  ]
+}
