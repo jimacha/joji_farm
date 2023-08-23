@@ -1,0 +1,24 @@
+/* global varibale */
+:root {
+    --theme-green:     #005c31;
+    --theme-blue:      #141951;
+    --theme-white:     #ffffff;
+ 
+ }
+
+ .text-title {
+    color: var(--theme-blue);
+    font-size: 32px;
+    font-weight: 700;
+ }
+ .text-subtitle {
+    color: var(--theme-green);
+    font-size: 28px;
+    font-weight: 400px;
+ }
+ .theme-bg-white {
+    background-color: var(--theme-white) ;
+ }
+ .profile {
+    font-size: 50px;
+ }
