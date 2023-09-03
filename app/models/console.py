@@ -1,51 +1,93 @@
-import json
+import sqlite3
 
 class Console:
     def __init__(self):
-        self.data = {}
+        self.conn = sqlite3.connect('users.db')
+        self.create_tables()
+
+    def create_tables(self):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                phone_number TEXT,
+                email TEXT,
+                password TEXT,
+                confirm_password TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS farms (
+                id INTEGER PRIMARY KEY,
+                user_id INTEGER,
+                crop_type TEXT,
+                crop_size INTEGER,
+                FOREIGN KEY (user_id) REFERENCES users (id)
+            )
+        ''')
+        self.conn.commit()
 
     def add_farm(self, user_id, crop_type, crop_size):
-        if user_id not in self.data:
-            return False
-
-        user_data = self.data[user_id]
-        farms = user_data.get('farms', [])
-        farm_data = {'crop_type': crop_type, 'crop_size': crop_size}
-        farms.append(farm_data)
-        user_data['farms'] = farms
-
+        cursor = self.conn.cursor()
+        cursor.execute('INSERT INTO farms (user_id, crop_type, crop_size) VALUES (?, ?, ?)', (user_id, crop_type, crop_size))
+        self.conn.commit()
         return True
 
     def create_user(self, name, phone_number, email, password, confirm_password):
-        user_id = len(self.data) + 1
-        user_data = {
-            'name': name,
-            'phone_number': phone_number,
-            'email': email,
-            'password': password,
-            'confirm_password': confirm_password,
-            'farms': []
-        }
-        self.data[user_id] = user_data
-        return user_id
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            INSERT INTO users (name, phone_number, email, password, confirm_password)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (name, phone_number, email, password, confirm_password))
+        self.conn.commit()
+        return cursor.lastrowid
 
     def get_user(self, user_id):
-        return self.data.get(user_id, None)
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+        user_data = cursor.fetchone()
+
+        if user_data:
+            cursor.execute('SELECT crop_type, crop_size FROM farms WHERE user_id = ?', (user_id,))
+            farms = cursor.fetchall()
+            user_data = dict(user_data)
+            user_data['farms'] = [{'crop_type': farm[0], 'crop_size': farm[1]} for farm in farms]
+
+        return user_data
 
     def get_all_users(self):
-        return list(self.data.values())
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM users')
+        users_data = cursor.fetchall()
+        users = []
+
+        for user_data in users_data:
+            user_id = user_data[0]
+            cursor.execute('SELECT crop_type, crop_size FROM farms WHERE user_id = ?', (user_id,))
+            farms = cursor.fetchall()
+            user_data = dict(user_data)
+            user_data['farms'] = [{'crop_type': farm[0], 'crop_size': farm[1]} for farm in farms]
+            users.append(user_data)
+
+        return users
+
+    def close_connection(self):
+        self.conn.close()
 
 # Example usage:
 if __name__ == '__main__':
     console = Console()
-    user_id = console.create_user('Jimmy Machari', '1234567890', 'macharia.com', 'password123', 'password123')
+    user_id = console.create_user('John Doe', '1234567890', 'john@example.com', 'password123', 'password123')
     console.add_farm(user_id, 'Wheat', 10)
     console.add_farm(user_id, 'Corn', 8)
 
     user = console.get_user(user_id)
     print("User Data:")
-    print(json.dumps(user, indent=2))
+    print(user)
 
     all_users = console.get_all_users()
     print("\nAll Users:")
-    print(json.dumps(all_users, indent=2))
+    print(all_users)
+
+    console.close_connection()
