@@ -16,9 +16,9 @@ class TestConsole(unittest.TestCase):
     def test_add_user(self):
         """Test adding user data to the database."""
         user_data = {
-            "name": "John Doe",
+            "name": "Jimmy Macharia",
             "phone": "123-456-7890",
-            "email": "johndoe@example.com",
+            "email": "macharia.com",
             "num_farms": 2,
             "farm_locations": ["Farm A", "Farm B"]
         }

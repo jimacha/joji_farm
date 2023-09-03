@@ -78,7 +78,7 @@ class Console:
 # Example usage:
 if __name__ == '__main__':
     console = Console()
-    user_id = console.create_user('John Doe', '1234567890', 'john@example.com', 'password123', 'password123')
+    user_id = console.create_user('Jimmy Macharia', '1234567890', 'macharia.com', 'password123', 'password123')
     console.add_farm(user_id, 'Wheat', 10)
     console.add_farm(user_id, 'Corn', 8)
 
