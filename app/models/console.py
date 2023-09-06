@@ -1,94 +1,97 @@
-import sqlite3
-import os
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    phone_number = Column(String)
+    email = Column(String)
+    password = Column(String)
+    confirm_password = Column(String)
+
+    farms = relationship('Farm', back_populates='user')
+
+class Farm(Base):
+    __tablename__ = 'farms'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    crop_type = Column(String)
+    crop_size = Column(Integer)
+
+    user = relationship('User', back_populates='farms')
 
 class Console:
     def __init__(self):
-        self.conn = sqlite3.connect('users.db')
-        self.create_tables()
+        self.engine = create_engine('sqlite:///users.db')  # Replace 'users.db' with your desired database URL
+        Base.metadata.create_all(self.engine)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
 
     def create_tables(self):
-        cursor = self.conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY,
-                name TEXT,
-                phone_number TEXT,
-                email TEXT,
-                password TEXT,
-                confirm_password TEXT
-            )
-        ''')
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS farms (
-                id INTEGER PRIMARY KEY,
-                user_id INTEGER,
-                crop_type TEXT,
-                crop_size INTEGER,
-                FOREIGN KEY (user_id) REFERENCES users (id)
-            )
-        ''')
-        self.conn.commit()
+        pass  # No longer needed, as tables are created using SQLAlchemy declarative_base
 
     def add_farm(self, user_id, crop_type, crop_size):
-        cursor = self.conn.cursor()
-        cursor.execute('INSERT INTO farms (user_id, crop_type, crop_size) VALUES (?, ?, ?)', (user_id, crop_type, crop_size))
-        self.conn.commit()
+        new_farm = Farm(user_id=user_id, crop_type=crop_type, crop_size=crop_size)
+        self.session.add(new_farm)
+        self.session.commit()
         return True
 
     def create_user(self, name, phone_number, email, password, confirm_password):
-        cursor = self.conn.cursor()
-        cursor.execute('''
-            INSERT INTO users (name, phone_number, email, password, confirm_password)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (name, phone_number, email, password, confirm_password))
-        self.conn.commit()
-        return cursor.lastrowid
+        new_user = User(
+            name=name,
+            phone_number=phone_number,
+            email=email,
+            password=password,
+            confirm_password=confirm_password
+        )
+        self.session.add(new_user)
+        self.session.commit()
+        return new_user.id
 
     def get_user(self, user_id):
-        cursor = self.conn.cursor()
-        cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
-        user_data = cursor.fetchone()
-
-        if user_data:
-            cursor.execute('SELECT crop_type, crop_size FROM farms WHERE user_id = ?', (user_id,))
-            farms = cursor.fetchall()
+        user = self.session.query(User).filter_by(id=user_id).first()
+        if user:
+            farms = self.session.query(Farm).filter_by(user_id=user_id).all()
             user_data = {
-                'id': user_data[0],
-                'name': user_data[1],
-                'phone_number': user_data[2],
-                'email': user_data[3],
-                'password': user_data[4],
-                'confirm_password': user_data[5],
-                'farms': [{'crop_type': farm[0], 'crop_size': farm[1]} for farm in farms]
+                'id': user.id,
+                'name': user.name,
+                'phone_number': user.phone_number,
+                'email': user.email,
+                'password': user.password,
+                'confirm_password': user.confirm_password,
+                'farms': [{'crop_type': farm.crop_type, 'crop_size': farm.crop_size} for farm in farms]
             }
-
-        return user_data
+            return user_data
+        else:
+            return None
 
     def get_all_users(self):
-        cursor = self.conn.cursor()
-        cursor.execute('SELECT * FROM users')
-        users_data = cursor.fetchall()
-        users = []
+        users = self.session.query(User).all()
+        users_data = []
 
-        for user_data in users_data:
-            user_id = user_data[0]
-            cursor.execute('SELECT crop_type, crop_size FROM farms WHERE user_id = ?', (user_id,))
-            farms = cursor.fetchall()
+        for user in users:
+            farms = self.session.query(Farm).filter_by(user_id=user.id).all()
             user_data = {
-                'id': user_data[0],
-                'name': user_data[1],
-                'phone_number': user_data[2],
-                'email': user_data[3],
-                'password': user_data[4],
-                'confirm_password': user_data[5],
-                'farms': [{'crop_type': farm[0], 'crop_size': farm[1]} for farm in farms]
+                'id': user.id,
+                'name': user.name,
+                'phone_number': user.phone_number,
+                'email': user.email,
+                'password': user.password,
+                'confirm_password': user.confirm_password,
+                'farms': [{'crop_type': farm.crop_type, 'crop_size': farm.crop_size} for farm in farms]
             }
-            users.append(user_data)
+            users_data.append(user_data)
 
-        return users
+        return users_data
 
     def close_connection(self):
-        self.conn.close()
+        self.session.close()
 
 # Example usage:
 if __name__ == '__main__':
