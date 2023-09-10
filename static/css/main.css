@@ -22,3 +22,10 @@
  .profile {
     font-size: 50px;
  }
+ .caption-2 figcaption {
+   width: 80%;
+   position: absolute;
+   bottom: 1rem;
+   left: 10%;
+   background: rgba(255, 255, 255, 0.6);
+ }

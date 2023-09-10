@@ -66,7 +66,33 @@ def create_app():
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
         return render_template("login.html", cache_id=cache_id)
+
+    @app.route('/account', strict_slashes=True)
+    def account():
+        """function that renders the branch template"""
+
+        """ Generate a UUID and convert it to a tring """
+        cache_id = str(uuid.uuid4())
+        return render_template("account.html", cache_id=cache_id)
+        
+    @app.route('/profile', strict_slashes=True)
+    def profile():
+        """function that renders the branch template"""
+
+        """ Generate a UUID and convert it to a tring """
+        cache_id = str(uuid.uuid4())
+        return render_template("profile.html", cache_id=cache_id)
     
+    @app.route('/profile/projects', strict_slashes=True)
+    def projects():
+        """function that renders the branch template"""
+
+        """ Generate a UUID and convert it to a tring """
+        cache_id = str(uuid.uuid4())
+        return render_template("projects.html", cache_id=cache_id)
+    
+
+
     @app.route('/shop', strict_slashes=True)
     def edit_product():
         """function that renders the branch template"""

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Overview</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </nav>
+    </div>
+<div class="row">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Account</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+</div>
+<div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">General</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Security</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Notification</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+<div class="row align-items-center">
+  <div class="col-2 profile-img">
+    <i class="bi bi-person-circle" style="font-size: 70px;"></i>
+  </div>
+  <div class="col-8">
+    <h6>Your Avarter</h6><br>
+    <h6>PNG or JPEG no bigger than 1000px wide and tall.</h6>
+
+  </div>
+  <div class="col-2">
+    <button class="bg-success">Upload</button>
+  </div>
+</div>
+<div class="row mt-5 d-flex justify-content-between">
+    <div class="col">
+        <label class="form-label" name="f_name">First Name</label><br>
+        <input class="form-control" type="text">
+    </div>
+    <div class="col">
+        <label name="f_name">Last Name</label><br>
+        <input class="form-control"  type="text">
+    </div>
+</div>
+<div class="row mt-5 d-flex justify-content-between">
+    <div class="col">
+        <label name="f_name">Email</label><br>
+        <input class="form-control"  type="text">
+    </div>
+    <div class="col">
+        <label name="f_name">Phone</label><br>
+        <input class="form-control"  type="text">
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-2">
+        <button class="bg-success ">Save</button>
+    </div>
+</div>
+<div class="row d-flex justify-content-end pt-4">
+    <div class="col-4">
+        <h6>Delete your account</h6>
+        <p>Please note that your account is a
+            permanent action and will not be recoverable once completed.
+        </p>
+    </div>
+    <div class="col-2">
+        <button class="bg-warning">Delete</button>
+    </div>
+</div>
+{% endblock %}
