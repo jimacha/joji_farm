@@ -18,14 +18,153 @@
     
   </head>
 <body>
-  {% block content %}
-  {% endblock %}
+  <div class=" Dashboard">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg ">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <!-- Toggle button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Navbar brand -->
+          <a class="navbar-brand mt-2 mt-lg-0" href="{{ url_for('dashboard')}}">
+            <img
+              src="static/img/logo.png"
+              height="60"
+              alt="MDB Logo"
+              loading="lazy"
+            />
+          </a>
+          
+          <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+          <!-- Icon -->
+          <a
+          class="text-reset me-3 "
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bell"></i>
+          <span class="badge rounded-pill badge-notification bg-danger">1</span>
+        </a>
+
+          <!-- Notifications -->
+          
+          <!-- Avatar -->
+          <div class="dropdown">
+            <a
+              class="dropdown-toggle d-flex align-items-center hidden-arrow"
+              href="#"
+              id="navbarDropdownMenuAvatar"
+              role="button"
+              data-mdb-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                class="rounded-circle"
+                height="40"
+                alt="Black and White Portrait of a Man"
+                loading="lazy"
+              />
+            </a>
+          </div>
+        </div>
+        <!-- Right elements -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+<!-- Navbar -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="side-bar col-2">
+            <div class="profile d-flex justify-content-center"><i class="bi bi-person-circle" ></i></div><br>
+            <h3 class="accordion-header d-flex justify-content-center">Dashboard</h3>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    <i class="bi bi-person"> Pages</i>
+                  </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <ul>
+                      <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-person-fill"> Account</i></a></li>
+                    <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-person-fill">My profile</i></a></li>
+                    
+                    <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-people"> Team</i></a></li>
+                    <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-bag"> Orders</i></a></li>
+                    <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-receipt"> Invoice</i></a></li>
+                    <li><a href="#" class=" list-group-item list-group-item-action"><i class="bi bi-file-post"> Pricing</i></a></li>
+                  </ul>  
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    <i class="bi bi-kanban"> Farm Management</i>
+                  </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <a class="badge rounded-pill bg-light text-dark" id="new-user"><i class="bi bi-plus-circle"> Add a farm</i></a>
+                    <a class="badge rounded-pill bg-light text-dark" id="new-user" href="{{url_for('add_product')}}"><i class="bi bi-plus-circle"> Add a product</i></a>
+                    <a class="list-group-item list-group-item-action .d-none d-sm-block"><i class="bi bi-pencil-square"> Edit</i></a>
+                    <!-- only on mobile -->
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    <i class="bi bi-shop"> Blog</i>
+                  </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+                    <a class="badge rounded-pill bg-light text-dark" id="add-item" href="{{url_for('post_blog')}}"><i class="bi bi-plus-circle"> Add Item</i></a>
+                    <!-- <button id="add-item" type="button">add</button> -->
+                    <a class="badge rounded-pill bg-light text-dark" id="edit-item"><i class="bi bi-pencil-square"> Edit Item</i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="side-bar col-2">
+                {% block content %}
+                {% endblock %}
+        </div>
+      </div>
+  </div>
+
+  </div>
   
 
   <!-- Jquery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"><script></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
     <!-- Main.js -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>

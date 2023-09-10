@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="Add-a-Product " id="item-form" style="">
+    <h3 class="d-flex justify-content-center">Post blog</h3>
+  <div class="d-flex align-items-center justify-content-center" id="add-item">
+    <form class="needs-validation" method="post" action = '/post_blog' enctype = "multipart/form-data">
+        <p>
+            <label for="name">Blo Title</label>
+            <br>
+            <input type="text" class="form-control" name="title"
+                   placeholder="title" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+    
+        <p>
+            <label for="body">Blog Body</label>
+            <br>
+            <textarea name="body"
+                      placeholder="blog body"
+                      rows="5"
+                      class="form-control"
+                      cols="60"
+                      ></textarea>
+        </p>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" name="image_url" id="image_url" required>
+          <label class="custom-file-label" for="image_url">Choose file</label>
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+       
+        <p>
+            <button class="btn btn-success" type="submit">Submit</button>
+        </p>
+    </form> 
+    
+  </div>
+  </section>
+
+{% endblock %}

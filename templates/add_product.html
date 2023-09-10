@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="Add-a-Product " id="item-form" style="">
+    <h3 class="d-flex justify-content-center">Add Product</h3>
+  <div class="d-flex align-items-center justify-content-center" id="add-item">
+    <form class="needs-validation" method="post" action = '/add_product' enctype = "multipart/form-data">
+        <p>
+            <label for="name">Name</label>
+            <br>
+            <input type="text" class="form-control" name="name"
+                   placeholder="name" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+        <p>
+            <label for="category">Category</label>
+            <br>
+            <input type="text" class="form-control" name="category"
+                   placeholder="category" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+    
+        <p>
+            <label for="m_category">Sub Category</label>
+            <br>
+            <input type="text" class="form-control" name="m_category"
+                   placeholder="Sub category" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+        
+        <p>
+            <label for="short_description">Short Description</label>
+            <br>
+            <input type="text" class="form-control" name="short_description"
+                   placeholder="Short Description" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+        <p>
+            <label for="long_description">Long Description</label>
+            <br>
+            <textarea name="long_description"
+                      placeholder="Long Description"
+                      rows="5"
+                      class="form-control"
+                      cols="60"
+                      ></textarea>
+        </p>
+        <!-- <p>
+    
+            <div class="mb-3">
+                <label for="formFile" class="form-label">choose image</label>
+                <input class="form-control" type="text" id="image_url" name="image_url">
+            </div>
+        </p> -->
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" name="image_url" id="image_url" required>
+          <label class="custom-file-label" for="image_url">Choose file</label>
+        </div>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <p>
+            <label for="price">Price</label>
+            <br>
+            <input type="number" class="form-control" name="price"
+                   placeholder="Product Price" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+       
+        <p>
+            <button class="btn btn-success" type="submit">Submit</button>
+        </p>
+    </form> 
+    
+  </div>
+  </section>
+
+{% endblock %}
