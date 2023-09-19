@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Product List</h1>
+<table class="table table-bordered table-sm " border="3">
+    <thead>
+        <tr class="theme-bg-blue">
+            <th class="">ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Sub Category</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>created</th>
+            <!-- <th>Description</th> -->
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr data-row_id="{{product.id}}">
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }} </td>
+            <td>{{ product.m_category }} </td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.image_url }}</td>
+            <td>{{ product.created_at}}</td>
+            <!-- <td> {{ product.description }}</td> -->
+
+            <td>
+                <button type="button" class="open-edit-modal-btn" data-bs-toggle="modal" data-bs-target="#edit"
+                    data-row-id="{{ product.id }}"
+                    data-product-name="{{ product.name }}"
+                    short_description="{{ product.short_descriptiop }}"
+                    long_description = "{{ product.long_description}}"
+                    price = "{{product.price}}">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit </h5>
+                                <button type="button" class="btn-edit-close theme-bg-blue" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('edit_product', id=product.id) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    <p><span id="edit-modal-content"></span></p>
+                                    <p>
+                                        <label for="name">Name</label>
+                                        <br>
+                                        <input type="text" class="form-control name" name="name"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <p>
+                                        <label for="category">Category</label>
+                                        <br>
+                                        <input type="text" class="form-control category" name="category"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+
+                                    <p>
+                                        <label for="m_category">Sub Category</label>
+                                        <br>
+                                        <input type="text" class="form-control sub_category" name="m_category"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+
+                                    <p>
+                                        <label for="short_description">Short Description</label>
+                                        <br>
+                                        <input type="text" class="form-control short_descr" name="short_description"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <p>
+                                        <label for="long_description">Long Description</label>
+                                        <br>
+                                        <textarea name="long_description" placeholder=""
+                                            rows="5" class="form-control long_desc" cols="60"></textarea>
+                                    </p>
+
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="image_url" id="image_url"
+                                        required>
+                                        <label class="custom-file-label" for="image_url">Choose file</label>
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <p>
+                                        <label for="price">Price</label>
+                                        <br>
+                                        <input type="number" class="form-control" name="price"
+                                            placeholder="{{product.price}}" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-edit-close"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+            <td>
+                <button type="button" class="open-modal-btn" data-bs-toggle="modal" data-bs-target="#delete"
+                    data-bs-whatever="@mdo" data-row-id="{{ product.id }}" data-product-name="{{ product.name }}"
+                    >
+                    <i class="bi bi-x-circle text-danger"></i>
+                </button>
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="delete" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Remove Item</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                               <span id="modal-content"></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form id="delete-form" data-base-action="{{ url_for('delete_product', id=product.id) }}"
+                                    method="POST">
+                                    <button type="submit" class="btn btn-danger">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h1>Farms List</h1>
+<table class="table table-bordered table-sm " border="3">
+    <thead>
+        <tr class="theme-bg-blue">
+            <th class="">ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Size</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for farm in farms %}
+        <tr data-row_id="{{farms.id}}">
+            <td>{{ farm.id }}</td>
+            <td>{{ farm.name }}</td>
+            <td>{{ farm.location }} </td>
+            <td>{{ farm.size_acres }} </td>
+            <!-- <td> {{ product.description }}</td> -->
+
+            <td>
+                <button type="button" class="open-edit-modal-btn" data-bs-toggle="modal" data-bs-target="#edit"
+                    data-row-id="{{ farm.id }}"
+                    data-product-name="{{ farm.name }}"
+                    short_description="{{ farm.short_descriptiop }}"
+                    long_description = "{{ farm.long_description}}"
+                    price = "{{farm.price}}">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Edit </h5>
+                                <button type="button" class="btn-edit-close theme-bg-blue" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST"
+                                    enctype="multipart/form-data">
+                                    <p><span id="edit-modal-content"></span></p>
+                                    <p>
+                                        <label for="name">Name</label>
+                                        <br>
+                                        <input type="text" class="form-control name" name="name"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <p>
+                                        <label for="category">Category</label>
+                                        <br>
+                                        <input type="text" class="form-control category" name="category"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+
+                                    <p>
+                                        <label for="m_category">Sub Category</label>
+                                        <br>
+                                        <input type="text" class="form-control sub_category" name="m_category"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+
+                                    <p>
+                                        <label for="short_description">Short Description</label>
+                                        <br>
+                                        <input type="text" class="form-control short_descr" name="short_description"
+                                            placeholder="" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <p>
+                                        <label for="long_description">Long Description</label>
+                                        <br>
+                                        <textarea name="long_description" placeholder=""
+                                            rows="5" class="form-control long_desc" cols="60"></textarea>
+                                    </p>
+
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="image_url" id="image_url"
+                                        required>
+                                        <label class="custom-file-label" for="image_url">Choose file</label>
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <p>
+                                        <label for="price">Price</label>
+                                        <br>
+                                        <input type="number" class="form-control" name="price"
+                                            placeholder="{{farm.price}}" >
+                                        </input>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    </p>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary btn-edit-close"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+            <td>
+                <button type="button" class="open-modal-btn" data-bs-toggle="modal" data-bs-target="#delete"
+                    data-bs-whatever="@mdo" data-row-id="{{ farm.id }}" data-product-name="{{ farm.name }}"
+                    >
+                    <i class="bi bi-x-circle text-danger"></i>
+                </button>
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="delete" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Remove Item</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                               <span id="modal-content"></span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form id="delete-form" data-base-action=""
+                                    method="POST">
+                                    <button type="submit" class="btn btn-danger">Confirm</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div id="pagination">
+    <button id="prev-button" {% if products.has_prev %} {% else %}disabled{% endif %}>Previous</button>
+    <button id="next-button" {% if products.has_next %} {% else %}disabled{% endif %}>Next</button>
+  </div>
+{% endblock %}

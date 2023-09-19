@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="Add-a-Product " id="item-form" style="">
+    <h3 class="d-flex justify-content-center">Add Product</h3>
+  <div class="d-flex align-items-center justify-content-center" id="add-item">
+    <form class="needs-validation" method="post" action = '/add_farm' enctype = "multipart/form-data">
+        <p>
+            <label for="name">Name</label>
+            <br>
+            <input type="text" class="form-control" name="name"
+                   placeholder="name" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+        <p>
+            <label for="category">Location</label>
+            <br>
+            <input type="text" class="form-control" name="location"
+                   placeholder="location" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+    
+        <p>
+            <label for="m_category">Size in arcres</label>
+            <br>
+            <input type="text" class="form-control" name="size_acres"
+                   placeholder="size_acres" required>
+            </input>
+            <div class="valid-feedback">
+              Looks good!
+            </div>
+        </p>
+        
+        <p>
+            <button class="btn btn-success" type="submit">Submit</button>
+        </p>
+    </form> 
+    
+  </div>
+  </section>
+
+{% endblock %}

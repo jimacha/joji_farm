@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # app.py
 
+from codecs import strict_errors
+from email.policy import strict
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
@@ -21,6 +23,8 @@ def create_app():
     # Import models and forms here to avoid circular imports
     from models.product import Product
     from models.blog import Blog
+    from models.farm import Farm
+    from models.crop import Crop
     # from forms import ProductForm
     
    
@@ -74,6 +78,12 @@ def create_app():
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
         return render_template("account.html", cache_id=cache_id)
+    
+    @app.route('/manage', strict_slashes=True)
+    def manage():
+        products = Product.query.all()
+        farms = Farm.query.all()
+        return render_template("manage.html", products = products, farms = farms) 
         
     @app.route('/profile', strict_slashes=True)
     def profile():
@@ -102,6 +112,43 @@ def create_app():
         products = Product.query.all()
         return render_template("shop.html", products=products, cache_id=cache_id)
 
+    @app.route('/add_farm', strict_slashes=True, methods=('GET', 'POST'))
+    def add_farm():
+        """
+        """
+
+        """ fuction to add products to the db"""
+        if request.method == 'POST':
+            
+            name = request.form['name']
+            location = request.form['location']
+            size_acres = request.form['size_acres']
+        
+            """Error handling"""
+            if not name or not location or not size_acres:
+                error_statement = "All fields required..."
+                print("inside the if not")
+                return render_template("add_farm.html",
+                                    error_statement=error_statement,
+                                    name=name,
+                                    location = location,
+                                    size_acres = size_acres,
+                                    cache_id = cache_id)
+                print(error_statement)
+            else:
+                print("I am in the saving stage")
+                success_statement = "product added Successfuly"
+                farm = Farm(
+                    name=name,
+                    location = location,
+                    size_acres = size_acres)
+                db.session.add(farm)
+                db.session.commit()
+
+            # return render_template("/add_product", success_statement=success_statement, error_statement=error_statement)
+        """ Generate a UUID and convert it to a tring """
+        cache_id = str(uuid.uuid4())
+        return render_template("add_farm.html", cache_id=cache_id)
 
     @app.route('/add_product', strict_slashes=True, methods=('GET', 'POST'))
     def add_product():
