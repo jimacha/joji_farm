@@ -76,9 +76,10 @@ def create_app():
 
         blogs = Blog.query.all()
         users = User.query.all()
+        username = current_user.first_name
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
-        return render_template("dashboard.html", desc=desc, blogs=blogs, users=users, city=city, temp_rnd=temp_rnd, cache_id=cache_id)
+        return render_template("dashboard.html", desc=desc, blogs=blogs, username=username, users=users, city=city, temp_rnd=temp_rnd, cache_id=cache_id)
 
 
     @app.route('/login', methods=["GET","POST"], strict_slashes=True)
@@ -107,6 +108,21 @@ def create_app():
         flash('You have been logged out.', 'info')
         return redirect(url_for('login'))
 
+
+    @app.route('/delete_product/<int:id>', methods=['GET', 'POST'])
+    @login_required
+    def delete_product(id):
+        # Remove the product by ID (replace with your actual data source)
+        if request.method == 'POST':
+            product = Product.query.get_or_404(id)
+            db.session.delete(product)
+            db.session.commit()
+
+            # Redirect back to the product list after deleting
+            return redirect('/products')
+        else:
+            return redirect('/products')
+        
 
     @app.route('/account', strict_slashes=True)
     @login_required
@@ -139,6 +155,7 @@ def create_app():
                                blogs=blogs,
                                cache_id=cache_id)
     
+
     @app.route('/profile/projects', strict_slashes=True)
     @login_required
     def projects():
@@ -148,7 +165,16 @@ def create_app():
         cache_id = str(uuid.uuid4())
         return render_template("projects.html", cache_id=cache_id)
     
+    
+    @app.route('/profile/notifications', strict_slashes=True)
+    @login_required
+    def notifications():
+        """function that renders the branch template"""
 
+        """ Generate a UUID and convert it to a tring """
+        cache_id = str(uuid.uuid4())
+        return render_template("notifications.html", cache_id=cache_id)
+    
 
     @app.route('/shop', strict_slashes=True)
     @login_required
@@ -227,7 +253,8 @@ def create_app():
             short_description = request.form['short_description']
             long_description = request.form['long_description']
             image_url = filename
-            price = request.form['price']
+            # price = request.form['price']
+            owner_id = current_user.id
             now = datetime.datetime.now()
 
             """Error handling"""
@@ -254,7 +281,7 @@ def create_app():
                     short_description = short_description,
                     image_url = image_url,
                     created_at = now,
-                    price = price)
+                    owner_id = owner_id)
                 db.session.add(product)
                 db.session.commit()
                 print("is it you file?", image_url)

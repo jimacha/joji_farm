@@ -20,12 +20,11 @@ class Product(db.Model):
     def __repr__(self):
         return f'<product "{self.name}">'
     
-    def __init__(self, name, short_description, long_description, image_url, price, created_at, category, m_category, owner_id):
+    def __init__(self, name, short_description, long_description, image_url,created_at, category, m_category, owner_id):
         self.name = name
         self.short_description = short_description
         self.long_description = long_description
         self.image_url = image_url
-        self.price = price
         self.created_at = created_at
         self.category = category
         self.m_category = m_category

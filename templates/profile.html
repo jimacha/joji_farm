@@ -13,7 +13,7 @@
                 <a class="nav-link" href="{{url_for('projects')}}">Projects</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Notification</a>
+                <a class="nav-link" href="{{url_for('notifications')}}">Notification</a>
               </li>
             </ul>
           </div>
@@ -22,55 +22,28 @@
     </div>
 <div class="row align-items-center">
     {% for blog in blogs %}
-        <div class="col-4 profile-img  p-2">
-            <div class="card" style="width: 100;">
+        <div class="col-3 d-flex align-content-stretch flex-wrap p-2">
+            <div class="card" >
                 <div class="card-body">
                     <div class="card-title">
+                        {% for user in users if user["first_name"] == username %}
                         
-                            <h6><i class="bi bi-person-circle" style="font-size: 50px;"></i>Joseph Kageche<br>4hrs</h6>
+                        <p>Posted By: {{user.first_name}}</p>
+                        {% endfor %}
+                        
                             
-                        
+                            
+                        <h4>{{blog.title}}</h4>
                         <div class="card-text">
-                            <p>Cabbages may not be the flashiest vegetable in the garden, but beneath their humble exterior lies a world of flavor, nutrition, and culinary versatility that's worth exploring. Let's take a closer look at these unassuming leafy greens and discover why they deserve a place on your plate.</p>
+                            <p>{{blog.body}}</p>
                         </div>
                     </div>
-                    <img src="{{url_for('static', filename='/images/IMG_20201129_135158.jpg')}}" class="card-img-bottom" alt="...">
+                    <img src="/static/images/{{blog.image_url }}"
+                    class="card-img-bottom" alt="...">
                 </div>
             </div>
         </div>
         {% endfor %}
-        <div class="col-4 profile-img  p-2" >
-            <div class="card" style="width: 100;">
-                <div class="card-body">
-                    <div class="card-title">
-                        
-                            <h6><i class="bi bi-person-circle" style="font-size: 50px;"></i>Joseph Kageche<br>4hrs</h6>
-                            
-                        
-                        <div class="card-text">
-                            <p>Cabbages may not be the flashiest vegetable in the garden, but beneath their humble exterior lies a world of flavor, nutrition, and culinary versatility that's worth exploring. Let's take a closer look at these unassuming leafy greens and discover why they deserve a place on your plate.</p>
-                        </div>
-                    </div>
-                    <img src="{{url_for('static', filename='/images/IMG_20201129_135158.jpg')}}" class="card-img-bottom" alt="...">
-                </div>
-            </div>
-        </div>
-        <div class="col-4 profile-img  p-2" >
-            <div class="card" style="width: 100;">
-                <div class="card-body">
-                    <div class="card-title">
-                        
-                            <h6><i class="bi bi-person-circle" style="font-size: 50px;"></i>Joseph Kageche<br>4hrs</h6>
-                            
-                        
-                        <div class="card-text">
-                            <p>Cabbages may not be the flashiest vegetable in the garden, but beneath their humble exterior lies a world of flavor, nutrition, and culinary versatility that's worth exploring. Let's take a closer look at these unassuming leafy greens and discover why they deserve a place on your plate.</p>
-                        </div>
-                    </div>
-                    <img src="{{url_for('static', filename='/images/IMG_20201129_135158.jpg')}}" class="card-img-bottom" alt="...">
-                </div>
-            </div>
-        </div>
     <div class="col-2">
         
     </div>
