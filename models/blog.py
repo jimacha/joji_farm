@@ -6,18 +6,20 @@ from app import db
 # models
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String(255), nullable=False)
-    user = db.Column(db.String(255), nullable=False)
-    title= db.Column(db.String(255), nullable=False)                                   
+    name = db.Column(db.String(255), nullable=True)  # You can make this field nullable if needed
+    title = db.Column(db.String(255), nullable=False)
     body = db.Column(db.Text)
     image_url = db.Column(db.String(255))
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __init__(self, user, title, body, image_url, created_at):
-        # self.name = name
-        self.user = user
+    # Define a relationship to User for the blog's author
+    author = db.relationship('User', backref=db.backref('blogs', lazy=True))
+
+    def __init__(self, name, title, body, image_url, author_id, created_at):
+        self.name = name
         self.title = title
         self.body = body
         self.image_url = image_url
-        self.created_at = created_at
+        self.author_id = author_id
+        self.created_at = self.created_at

@@ -1,28 +1,44 @@
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_bcrypt import Bcrypt
 
-db = SQLAlchemy()
-
+from app import db
+bcrypt = Bcrypt()
+# models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), unique=True, nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password_hash = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
 
-    def __init__(self, username, email, password, created_at=None):
-        self.username = username
+    def __init__(self, first_name, last_name, email, password):
+        self.first_name = first_name
+        self.last_name = last_name
         self.email = email
-        self.set_password(password)  # Hash the password before saving it
-        if created_at is not None:
-            self.created_at = created_at
-
-    def set_password(self, password):
-        # Hash the password using Werkzeug's generate_password_hash function
-        self.password_hash = generate_password_hash(password)
-
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+    
     def check_password(self, password):
-        # Check if the provided password matches the hashed password
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password, password)
+    
+    # Required method: Check if the user is active
+    def is_active(self):
+        # For simplicity, assume all users are active
+        return True
 
+    # Required method: Check if the user is authenticated
+    def is_authenticated(self):
+        # In a real application, you can implement your authentication logic here
+        # For example, return True if the user has provided valid credentials during login
+        return True
+
+    # Required method: Check if the user is anonymous (typically False for authenticated users)
+    def is_anonymous(self):
+        # For authenticated users, return False (not anonymous)
+        return False
+
+    # Required method: Get the user's unique identifier (usually the user ID)
+    def get_id(self):
+        # Return the user's ID as a string
+        return str(self.id)

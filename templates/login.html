@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- CSS Here -->
+    <!-- MagnificPopup.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/magnific-popup.css') + '?' + cache_id }}">
+    <!-- SlickNav.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/slicknav.min.css') + '?' + cache_id }}">
+    <!-- Owl.carousel.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/owl.carousel-2.3.4.min.css') + '?' + cache_id }}">
+    <!-- Fontawesome.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fontawesome-free-5.12.0.min.css') + '?' + cache_id }}">
+    <!-- Bootstrap.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-4.3.1.min.css') + '?' + cache_id }}">
+    <!-- Default.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') + '?' + cache_id }}">
+    <!-- Style.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') + '?' + cache_id }}">
+    <!-- Responsive.css -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsive.css') + '?' + cache_id }}">
+    <!--Blog posts-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') + '?' + cache_id }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/colornip.min.css') + '?' + cache_id }}">
+    <link id="theme" type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/theme-colors/theme-default.css') + '?' + cache_id }}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+
+    <!-- Jquery -->
+    <script src="{{ url_for('static', filename='js/jquery-3.4.1.min.js') + '?' + cache_id }}"></script>
+  </head>
+<body>
+    <div class="container d-flex align-items-center justify-content-center">
+        <!-- If you need a "Forgot Password" link, you can add it here -->
+        <!-- Example: <a href="/forgot_password">Forgot Password?</a> -->
+        <div class="border d-flex flex-column" style="width:30rem;">
+            <div class="mx-4 p-3">
+              <div class="text-center mt-4 mb-4">
+                <p class="h4">Sign in</p>
+              </div>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flash-messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+        <!-- Login form -->
+              <form method="POST" action="/login">
+                    <div class="cs-form">
+                        <input type="email" class="form-control border-top-0 border-left-0 border-right-0" id="email" name="email" required />
+                        <label>E-mail</label>
+                    </div>
+                    <div class="cs-form">
+                        <input type="password" class="form-control border-top-0 border-left-0 border-right-0" id="password" name="password" required/>
+                        <label>Password</label>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center align-items-center">
+                        <input type="checkbox" class="me-1" />
+                        <p class="m-0">Remember me</p>
+                        <a class="text-decoration-none ms-3" href="#">Forgot Password ?</a>
+                    </div>
+                    <button class="btn btn-dark btn-block my-3" type="submit">
+                        Sign in
+                    </button>
+                </form>
+            </div>
+          </div>
+    </div>
+
+  <script src="{{ url_for('static', filename='js/popper.min.js') + '?' + cache_id }}"></script>
+  <!-- Bootstrap.js -->
+  <script src="{{ url_for('static', filename='js/bootstrap-4.3.1.min.js') + '?' + cache_id }}"></script>
+  <!-- Modernizr.js -->
+  <script src="{{ url_for('static', filename='js/vendor/modernizr-3.5.0.min.js') + '?' + cache_id }}"></script>
+  <!-- Owl.Carousel.js -->
+  <script src="{{ url_for('static', filename='js/vendor/owl.carousel-2.3.4.min.js') + '?' + cache_id }}"></script>
+  <script src="{{ url_for('static', filename='js/vendor/owl.carousel2.thumbs.min.js') + '?' + cache_id }}"></script>
+  <!-- Waypoints.js -->
+  <script src="{{ url_for('static', filename='js/vendor/waypoints-4.0.1.min.js') + '?' + cache_id }}"></script>
+  <!-- ColorNip.js -->
+  <script src="{{ url_for('static', filename='js/vendor/colornip.min.js') + '?' + cache_id }}"></script>
+  <!-- SlickNav.js -->
+  <script src="{{ url_for('static', filename='js/vendor/slicknav.min.js') + '?' + cache_id }}"></script>
+  <!-- ScrollUp.js -->
+  <script src="{{ url_for('static', filename='js/vendor/jquery.scrollUp.min.js') + '?' + cache_id }}"></script>
+  <!-- MagnificPopup.js -->
+  <script src="{{ url_for('static', filename='js/vendor/magnific-popup.min.js') + '?' + cache_id }}"></script>
+  <!-- Brand js -->
+  <script src="{{ url_for('static', filename='js/brands.js') + '?' + cache_id }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.js"></script>
+  <!-- Main.js -->
+  <script src="{{ url_for('static', filename='js/main.js') + '?' + cache_id }}"></script>
+  <script src="{{ url_for('static', filename='js/transition.js') + '?' + cache_id }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"></script>
+  
+</body>
+
+</html>

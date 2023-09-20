@@ -21,6 +21,7 @@
       </nav>
     </div>
 <div class="row align-items-center">
+    {% for blog in blogs %}
         <div class="col-4 profile-img  p-2">
             <div class="card" style="width: 100;">
                 <div class="card-body">
@@ -37,6 +38,7 @@
                 </div>
             </div>
         </div>
+        {% endfor %}
         <div class="col-4 profile-img  p-2" >
             <div class="card" style="width: 100;">
                 <div class="card-body">

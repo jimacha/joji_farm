@@ -24,52 +24,40 @@
 
 <body>
   <div class=" Dashboard">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg ">
-      <!-- Container wrapper -->
-      <div class="container-fluid">
-        <!-- Toggle button -->
-        <button class="navbar-toggler" type="button" data-mdb-toggle="collapse"
-          data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!-- Navbar brand -->
-          <a class="navbar-brand mt-2 mt-lg-0" href="{{ url_for('dashboard')}}">
-            <img src="static/img/logo.png" height="60" alt="MDB Logo" loading="lazy" />
+       <!-- Navbar -->
+       <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"
+            <a data-toggle="tooltip" title="" href="{{ url_for('dashboard')}}"><img src="static/img/logo.png" alt="logo" width="90" height="90" class="d-inline-block align-text-top"></a>
           </a>
-
-          <!-- Left links -->
-        </div>
-        <!-- Collapsible wrapper -->
-
-        <!-- Right elements -->
-        <div class="d-flex align-items-center">
-          <!-- Icon -->
-          <a class="text-reset me-3 " href="#" id="navbarDropdownMenuLink" role="button" aria-expanded="false">
-            <i class="fas fa-bell"></i>
-            <span class="badge rounded-pill badge-notification bg-danger">1</span>
-          </a>
-
-          <!-- Notifications -->
-
-          <!-- Avatar -->
-          <div class="dropdown">
-            <a class="dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar"
-              role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-              <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="40"
-                alt="Black and White Portrait of a Man" loading="lazy" />
-            </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard')}}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('manage')}}">Products</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Profile
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{url_for('account')}}">Account</a></li>
+                  <li><a class="dropdown-item" href="{{url_for('logout')}}">Logout</a></li>
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
-        <!-- Right elements -->
-      </div>
-      <!-- Container wrapper -->
-    </nav>
-    <!-- Navbar -->
+      </nav>
+   <!-- Navbar -->
     <div class="container-fluid">
       <div class="row">
         <div class="side-bar col-2">
@@ -114,12 +102,12 @@
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
                 data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                  <a class="badge rounded-pill bg-light text-dark" id="new-user" href="{{url_for('add_farm')}}"><i class="bi bi-plus-circle"> Add a
+                  <a class="badge rounded-pill bg-light text-dark" id="add_farm" href="{{url_for('add_farm')}}"><i class="bi bi-plus-circle"> Add a
                       farm</i></a>
-                  <a class="badge rounded-pill bg-light text-dark" id="new-user" href="{{url_for('add_product')}}"><i
+                  <a class="badge rounded-pill bg-light text-dark" id="add_product" href="{{url_for('add_product')}}"><i
                       class="bi bi-plus-circle"> Add a product</i></a>
-                  <a class="list-group-item list-group-item-action .d-none d-sm-block"><i class="bi bi-pencil-square">
-                      Edit</i></a>
+                  <a class="badge rounded-pill bg-light text-dark" id="Manage" href="{{url_for('manage')}}"><i class="bi bi-pencil-square">
+                      Manage</i></a>
                   <!-- only on mobile -->
 
                 </div>

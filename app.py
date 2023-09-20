@@ -5,7 +5,12 @@ from codecs import strict_errors
 from email.policy import strict
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required, UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
+from flask_bcrypt import Bcrypt
+from flask import jsonify
 import requests
 import uuid
 import datetime
@@ -22,21 +27,31 @@ def create_app():
 
     # Import models and forms here to avoid circular imports
     from models.product import Product
+    from models.user import User
     from models.blog import Blog
     from models.farm import Farm
     from models.crop import Crop
-    # from forms import ProductForm
     
+    
+    login_manager = LoginManager()
+    login_manager.login_view = 'login'
+    login_manager.init_app(app)
    
     @app.route('/shop', strict_slashes=True)
+    @login_required
     def shop():
         """function that renders the shop template"""
         cache_id = str(uuid.uuid4())
         products = Product.query.all()
         return render_template('shop.html', products=products, cache_id=cache_id)
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     @app.route('/')
     @app.route('/dashboard', strict_slashes=True)
+    @login_required
     def dashboard():
         """function that renders the branch template"""
         api_key = '57455f848e83c8c7e2e33f2142a43391'
@@ -58,20 +73,43 @@ def create_app():
         else:
             print('Error fetching weather data')
    
+
+        blogs = Blog.query.all()
+        users = User.query.all()
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
-        return render_template("dashboard.html", desc=desc, city=city, temp_rnd=temp_rnd, cache_id=cache_id)
+        return render_template("dashboard.html", desc=desc, blogs=blogs, users=users, city=city, temp_rnd=temp_rnd, cache_id=cache_id)
 
 
-    @app.route('/login', methods=["POST"], strict_slashes=True)
+    @app.route('/login', methods=["GET","POST"], strict_slashes=True)
     def login():
-        """function that renders the branch template"""
-
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
-        return render_template("login.html", cache_id=cache_id)
+        if request.method == 'POST':
+            email = request.form.get('email')
+            password = request.form.get('password')
+            user = User.query.filter_by(email=email).first()
+
+            if user and user.check_password(password):
+                login_user(user)
+                flash('Login successful!', 'success')
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Login failed. Please check your email and password.', 'danger')
+
+        return render_template('login.html', cache_id = cache_id)
+    
+    # Logout route
+    @app.route('/logout')
+    @login_required
+    def logout():
+        logout_user()
+        flash('You have been logged out.', 'info')
+        return redirect(url_for('login'))
+
 
     @app.route('/account', strict_slashes=True)
+    @login_required
     def account():
         """function that renders the branch template"""
 
@@ -80,20 +118,29 @@ def create_app():
         return render_template("account.html", cache_id=cache_id)
     
     @app.route('/manage', strict_slashes=True)
+    @login_required
     def manage():
         products = Product.query.all()
         farms = Farm.query.all()
         return render_template("manage.html", products = products, farms = farms) 
         
     @app.route('/profile', strict_slashes=True)
+    @login_required
     def profile():
         """function that renders the branch template"""
-
+        username = current_user.first_name
+        blogs = Blog.query.all()
+        users = User.query.all()
         """ Generate a UUID and convert it to a tring """
         cache_id = str(uuid.uuid4())
-        return render_template("profile.html", cache_id=cache_id)
+        return render_template("profile.html",
+                               username = username,
+                               users = users,
+                               blogs=blogs,
+                               cache_id=cache_id)
     
     @app.route('/profile/projects', strict_slashes=True)
+    @login_required
     def projects():
         """function that renders the branch template"""
 
@@ -104,6 +151,7 @@ def create_app():
 
 
     @app.route('/shop', strict_slashes=True)
+    @login_required
     def edit_product():
         """function that renders the branch template"""
 
@@ -113,6 +161,7 @@ def create_app():
         return render_template("shop.html", products=products, cache_id=cache_id)
 
     @app.route('/add_farm', strict_slashes=True, methods=('GET', 'POST'))
+    @login_required
     def add_farm():
         """
         """
@@ -123,6 +172,7 @@ def create_app():
             name = request.form['name']
             location = request.form['location']
             size_acres = request.form['size_acres']
+            owner_id = current_user.id
         
             """Error handling"""
             if not name or not location or not size_acres:
@@ -141,6 +191,7 @@ def create_app():
                 farm = Farm(
                     name=name,
                     location = location,
+                    owner_id=owner_id,
                     size_acres = size_acres)
                 db.session.add(farm)
                 db.session.commit()
@@ -151,6 +202,7 @@ def create_app():
         return render_template("add_farm.html", cache_id=cache_id)
 
     @app.route('/add_product', strict_slashes=True, methods=('GET', 'POST'))
+    @login_required
     def add_product():
         """function that renders the dashboard and also most of the admin part
             name (str) : name of the product
@@ -213,6 +265,7 @@ def create_app():
         return render_template("add_product.html", cache_id=cache_id)
 
     @app.route('/post_blog', strict_slashes=True, methods=('GET', 'POST'))
+    @login_required
     def post_blog():
         """function that renders the dashboard and also most of the admin part
             Title (str) : title of the blog
@@ -226,12 +279,11 @@ def create_app():
             f = request.files['image_url']
             filename = secure_filename(f.filename)
             f.save(app.config['IMAGE_FOLDER'] + filename)
-
+            name = request.form['name']
             title = request.form['title']
-            body = request.form['blog']
-            user = 'Admin'
+            body = request.form['body']
+            author_id = current_user.id
             image_url = filename
-            price = request.form['price']
             now = datetime.datetime.now()
 
             """Error handling"""
@@ -239,21 +291,23 @@ def create_app():
                 error_statement = "All fields required..."
                 return render_template("post_blog.html",
                                     error_statement=error_statement,
+                                    name = name,
                                     title=title,
                                     body = body,
+                                    
                                     image_url = image_url,
                                     cache_id=cache_id)
                 print(error_statement)
             else:
                 success_statement = "blog added Successfuly"
-                product = Product(
+                blog = Blog(
                     title = title,
+                    name = name,
                     body = body,
-                    user = user,
+                    author_id = author_id,
                     image_url = image_url,
-                    created_at = now,
-                    price = price)
-                db.session.add(product)
+                    created_at = now,)
+                db.session.add(blog)
                 db.session.commit()
                 print("is it you file?", image_url)
 
